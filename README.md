@@ -2,7 +2,7 @@
 
 Fork and clone this repo. On your fork, answer and commit the follow questions. When you are finished, submit the link to your repo on Canvas.
 
-## Question 1
+## Question 1√
 
 Write a function named `applyKTimes` that takes an integer `K` and a closure and calls the closure K times. The closure will not take any parameters and will not have a return value.
 
@@ -25,8 +25,19 @@ Hello Closures!
 Hello Closures!
 ```
 
+```swift
+func applyKTimes(_ K: Int, _ closure: () -> ()) {
+for _ in 0..<K {
+closure()
+}
+}
+applyKTimes(3) {print("Hello Closures!")}
+//or
+applyKTimes(3, {print("Hello Closures!")})
+```
 
-## Question 2
+
+## Question 2√
 
 Use `filter` to create an array called `multiples` that contains all the multiples of 3 from `numbers` and then print it.
 
@@ -37,8 +48,13 @@ Input: `let numbers = [1, 2, 3, 4, 6, 8, 9, 3, 12, 11]`
 
 Expected values: `multiples = [3, 6, 9, 3, 12]`
 
+```swift
+var multiples = numbers.filter({$0 % 3 == 0})
+print(multiples)
+```
 
-## Question 3
+
+## Question 3√
 
 Find the largest number from `numbers` and then print it. Use `reduce` to solve this exercise.
 
@@ -47,8 +63,13 @@ Input: `let numbers = [4, 7, 1, 9, 6, 5, 6, 9]`
 
 Output: `9`
 
+```swift
+var largestNum = numbers.reduce(Int.min,{ max($0, $1)})
+print(largestNum)
+```
 
-## Question 4
+
+## Question 4√
 
 Join all the strings from `strings` into one using `reduce`. Add spaces in between strings. Print your result.
 
@@ -57,8 +78,15 @@ Input: `let strings = ["We", "Heart", "Swift"]`
 
 Output: `"We Heart Swift"`
 
+```swift
+let strings = ["We", "Heart", "Swift"]
 
-## Question 5
+let newString = strings.reduce(String(), {$0 + " " + $1})
+print(newString)
+```
+
+
+## Question 5√
 
 `let cities = ["Shanghai", "Beijing", "Delhi", "Lagos", "Tianjin", "Karachi", "Karachi", "Tokyo", "Guangzhou", "Mumbai", "Moscow", "São Paulo"]`
 
@@ -69,7 +97,19 @@ b. Use `sortedBy` to sort `cities` alphabetical order of the second character of
 c. Use `sortedBy` to sort `cities` in order of the length of the city name.
 
 
-## Question 6
+
+```swift
+let alphabeticalOrder = cities.sorted(by: <)
+print(alphabeticalOrder)
+
+let secondCharacter = cities.sorted(by: {$0.dropFirst() > $1.dropFirst()})
+print(secondCharacter)
+
+let lengthOfCity = cities.sorted(by: {$0.count > $1.count})
+print(lengthOfCity)
+
+```
+## Question 6√
 
 `let citiesWithPopulation: [(String, Int)] = [("Shanghai", 24256800), ("Beijing", 21516000), ("Delhi", 16787941), ("Lagos", 16060303), ("Tianjin", 15200000), ("Karachi", 14910352), ("Karachi", 14160467), ("Tokyo", 13513734), ("Guangzhou", 13080500), ("Mumbai", 12442373), ("Moscow", 12380664), ("São Paulo", 12038175)]`
 
@@ -77,6 +117,14 @@ a. Use `sortedBy` to sort `citiesWithPopulation` in ascending order of populatio
 
 b. Use `sortedBy` to sort `citiesWithPopulation` in reverse alphabetical order of the last character in the city name.
 
+
+```swift
+let  popuation = citiesWithPopulation.sorted(by: {$0.1 > $1.1})
+print(popuation)
+
+let reverseAlphabeticalOrder = citiesWithPopulation.sorted(by: {String($0.0.reversed()) > String($1.0.reversed())})
+print(reverseAlphabeticalOrder)
+```
 
 ## Question 7
 
@@ -100,7 +148,7 @@ numbers = [1, 2, 3, 5, 4, 6]
 ```
 
 
-## Question 8
+## Question 8√
 
 Find the sum of the squares of all the odd numbers from `numbers` and then print it.
 
@@ -119,8 +167,29 @@ Input: `var numbers = [1, 2, 3, 4, 5, 6]`
 
 Output: `35 // 1 + 9 + 25 -> 35`
 
+```swift
+var oddNum = [Int]()
+for num in numbers where num % 2 == 1 {
+oddNum = [num]
+}
 
-## Question 9
+
+var squareNum = [Int]()
+for i in oddNum {
+squareNum = [i * i]
+}
+
+var sum = Int()
+for i in squareNum{
+sum += i
+}
+
+var squareOfOddNum = numbers.filter({$0 % 2 == 0}).map({$0 * $0}).reduce(0, +)
+print(squareOfOddNum)
+```
+
+
+## Question 9√
 
 Implement a function `forEach(array: [Int], _ closure: Int -> ())` that takes an array of integers and a closure and runs the closure for each element of the array.
 
@@ -142,7 +211,16 @@ Output:
 16
 ```
 
-## Question 10
+```swift
+func forEach(array: [Int], _ closure: (Int) -> ()) {
+for i in array {
+closure(i)
+}
+}
+forEach(array: [1, 2, 3, 4]) {print($0 * $0)}
+```
+
+## Question 10√
 
 Implement a function `combineArrays` that takes 2 arrays and a closure that combines 2 Ints into a single Int. The function combines the two arrays into a single array using the provided closure. Assume that the 2 arrays have equal length.
 
@@ -159,8 +237,26 @@ combineArrays(array1,array2) {
 
 Output: `[5,10,15,12]`
 
+```swift
+func combineArrays(_ array1:[Int],_ array2:[Int],_ closure: (Int, Int) -> Int) ->[Int]{
+var closureArray = [Int]()
+for (index1, value1) in array1.enumerated() {
+for (index2, value2) in array2.enumerated() {
+if index1 == index2 {
+closureArray +=  [closure(value1,value2)]
+}
+}
+}
 
-## Question 11
+return closureArray
+}
+var array1 = [1,2,3,4]
+var array2 = [5,5,5,3]
+var arrayValue = combineArrays(array1,array2) {$0 * $1}
+
+print(arrayValue)
+```
+## Question 11√
 
 a) Write a function called `intsToStrings` that takes an array of Ints and a closure as parameters and returns an array of Strings. The closure should take an Int and return a String. The function should apply the closure to the ints in the array.
 
@@ -190,9 +286,28 @@ a) ["1", "2", "3", "44", "555", "6600", "10763"]
 b) ["odd", "even", "odd", "even", "odd", "even", "odd"]
 c) ["one ", "two ", "three ", "four four ", "five five five ", "six six zero zero ", "one zero seven six three "]
 ```
+```swift
+func intsToStrings (_ arr:[Int], _ closure: (Int) -> (String)) -> [String] {
+var stringArray = [String]()
+for i in arr{
+stringArray += [closure(i)]
+}
+return stringArray
+}
+
+let asString = { (a: Int) -> String in
+return String(a)
+}
+
+var result = intsToStrings(theInts, asString)
+print(result)
 
 
-## Question 12
+
+var intToNewStrings = theInts.map({String($0)})
+```
+
+## Question 12√
 
 let myArray = [34,42,42,1,3,4,3,2,49]
 
@@ -208,6 +323,22 @@ b) Sort `myArray` in descending order by defining the constant `descendingOrder`
 ```swift
 let mySecondSortedArray = myArray.sort(descendingOrder)
 let descendingOrder =
+```
+
+```swift
+let myArray = [34,42,42,1,3,4,3,2,49]
+
+//a) Sort `myArray` in ascending order by defining the constant `ascendingOrder` below.
+
+
+let mySortedArray = myArray.sorted(by: <)
+
+
+
+//b) Sort `myArray` in descending order by defining the constant `descendingOrder` below.
+
+
+let mySecondSortedArray = myArray.sorted(by: >)
 ```
 
 
